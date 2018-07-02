@@ -16,9 +16,17 @@ class BaseHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template(html)
         self.response.write(template.render(values))
 
-class MainPage(BaseHandler):
+#class Data(ndb.Model):
+#    w1 = ndb.StringProperty()
+#    w2 = ndb.StringProperty()
+#    patatokukasi = ndb.StringProperty()
+ #   date = ndb.DateTimeProperty(auto_now_add=True)
+
+class MainPage1(BaseHandler):
     def get(self):
-        self.response.write(u'レッツパタトクカシー！')
+        self.response.write(u'レッツぱたとくかしー！')
+        #data = Data.query().order(-Data.date).fetch(1)
+        #values = { 'data':data }
         self.render('main.html')
 
     def post(self):
@@ -27,6 +35,7 @@ class MainPage(BaseHandler):
         if w1 is None or w2 is None:
             self.redirect('/')
         
+        #user = Data()
         result = ""
         for i in range(min(len(w1),len(w2))):
             result+= w1[int(i)]
@@ -36,10 +45,20 @@ class MainPage(BaseHandler):
         elif len(w2) < len(w1):
             result += w1[len(w1)-len(w2)-1:len(w1)]
 
+        #user.w1 = w1
+        #user.w2 = w2
+        #user.patatokukasi = result
+        #user.put()
+
         self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
-        self.response.write(w1 + u' + ' + w2 + u' = ' + result)
+        self.response.write(result)
         self.render('main.html')
 
+#class MainPage(webapp2.RequestHandler):
+#    def get(self):
+#        self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
+#        self.response.write(u'こんにちは！')
+
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/', MainPage1),
 ], debug=True)
