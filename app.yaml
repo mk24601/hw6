@@ -1,3 +1,0 @@
-entrypoint: dev_appserver.py python/
-env: flex
-runtime: python
