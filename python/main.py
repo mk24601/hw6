@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-　
 
-# 私の作ったweb appは　https://stepweek6.appspot.com 　だよ！
+# 私の作ったweb appは　https://stepweek6.appspot.com
 
 import webapp2
 import os
 import jinja2
 from google.appengine.ext import ndb
 
-#気にしなくていい部分 http://blog.adamrocker.com/2014/08/beginning-google-appengine-python.html のコピペ
+# http://blog.adamrocker.com/2014/08/beginning-google-appengine-python.html のコピペ
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-#気にしなくていい部分　http://blog.adamrocker.com/2014/08/beginning-google-appengine-python.html のコピペ
+#　http://blog.adamrocker.com/2014/08/beginning-google-appengine-python.html のコピペ
 class BaseHandler(webapp2.RequestHandler):
     def render(self, html, values={}):
         template = JINJA_ENVIRONMENT.get_template(html)
@@ -27,12 +27,12 @@ class MainPage(BaseHandler):
         self.render('main.html') # その下にmain.htmlの内容を表示させる
 
     def post(self):# もし https://stepweek6.appspot.com に「POST」でアクセスがきたら(=誰かが二つの単語を入力して「submit」を押したら)これが走る
-        w1 = self.request.get('w1') # main.htmlの5行目から取り出したw1の値をw1に代入(どっちも同じ名前の変数にしてごめん)
-        w2 = self.request.get('w2') # main.htmlの6行目から取り出したw2の値をw2に代入(どっちも同じ名前の変数にしてごめん)
+        w1 = self.request.get('w1') # main.htmlの5行目から取り出したw1の値をw1に代入(どっちも同じ名前の変数ですみません
+        w2 = self.request.get('w2') # main.htmlの6行目から取り出したw2の値をw2に代入(どっちも同じ名前の変数ですみません
         if w1 is None or w2 is None: # もしw1もしくはw2が未入力だったら
             self.redirect('/') # https://stepweek6.appspot.com にジャンプする
 
-        #############ここはパタトクカシーを生成している部分#############
+        #############ここはパタトクカシーを生成している部分###########
         result = ""
         for i in range(min(len(w1),len(w2))):
             result+= w1[int(i)]
@@ -43,22 +43,14 @@ class MainPage(BaseHandler):
             result += w1[len(w1)-len(w2)-1:len(w1)]
         #########################################################
 
-        self.response.headers['Content-Type'] = 'text/html; charset=UTF-8' # ごめん、私もこれ何かわからない　確かhttp://blog.adamrocker.com/2014/08/beginning-google-appengine-python.html のコピペ
+        self.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
         self.response.write(w1 + u' + ' + w2 + u' = ' + result) # 結果出力！
 
         self.render('main.html') # その下にmain.htmlの内容を表示させる
 
-#入力されたURLに対してどのclassを走らせるかを設定する部分
+# 入力されたURLに対してどのclassを走らせるかを設定する部分(ルーティング)
 app = webapp2.WSGIApplication([
-    #(私の場合)https://stepweek6.appspot.comにアクセスした時に走るプログラムはこれ
+    # https://stepweek6.appspot.comにアクセスした時に走るプログラムはこれ
     ('/', MainPage)
-
-    # https://stepweek6.appspot.com/??? にアクセスがあった時にclass[クラス名]を走らせたかったらこう書く
-    # ('/???',クラス名)
-
-    # (例)もしhttps://stepweek6.appspot.com/nextにアクセスがあった時にclass NextPageを走らせたかったらこう書く
-    # ('/next', NextPage)
-    # (例)もしhttps://stepweek6.appspot.com/index/pastにアクセスがあった時にclass MainPage2を走らせたかったらこう書く
-    # ('/index/past', MainPage2)
 
 ], debug=True)
